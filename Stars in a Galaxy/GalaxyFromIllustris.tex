@@ -1,0 +1,368 @@
+%%%%%%%%%S%%%%%%%%%%%%%%%%% Præambel %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\typeout{---------- Preamble start -------------} % vises i log
+
+%Dokumenttype og skriftstrrelsSe sættes:
+\documentclass[11pt,a4paper]{article} %fjern draft i færdigt dokument. Brug 11pt eller 12pt
+
+% Oplysninger til article-klassen:
+\title{Analysing a Milky-Way like galaxy from Illustris TNG}
+\author{Martin Sparre}
+\date{\today }
+
+%linjeafstand:
+%\linespread{1.3}
+\usepackage[usenames]{xcolor}
+%Laveste niveau i indholdsfortegnelse:
+\setcounter{tocdepth}{2}
+%Numereringsniveau:
+\setcounter{secnumdepth}{2}
+
+
+%Ligningsnummerering tager formen (section . nr)
+%\numberwithin{equation}{section}
+
+%ingen indrykning ved nyt afsnit:
+%\parindent=0pt
+
+%Der vises labels i margin - skal kun anvendes i draft
+%\usepackage[notref,notcite]{showkeys}
+
+%klikbar indholdsfortegnelse m.m.
+%\usepackage{hyperref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Vigtige Pakker %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%natbib - en bibTeX-pakke. [Curly] gr, at der bruges {} ved citationer. Natbib skal være før babel
+%\usepackage[curly]{natbib}
+\usepackage{natbib}
+
+% En række pakker, der skal inkluderes, hvis man skriver på dansk
+\usepackage[utf8]{inputenc} %Danske bogstaver kan bruges, ansinew for windoze - latin1 for linux
+%\usepackage[danish]{babel} %Kapitler mv. får danske navne
+%\usepackage{babel} %Kapitler mv. får danske navne
+\usepackage[T1]{fontenc}
+
+%Font:
+%\usepackage{lmodern}
+\usepackage{palatino}
+
+\usepackage{url}
+\usepackage{hyperref}
+
+%\usepackage{sectsty}
+%\allsectionsfont{\large\sffamily}
+
+\usepackage{graphicx} 
+
+%pakke så floats ikke flyder, indsæt [H] som argument efter \begin{figur}.
+\usepackage{float}
+
+
+%Marginer:
+\usepackage{vmargin}
+\setpapersize{A4}
+%argumenter:{hleftmargini}{htopmargini}{hrightmargini}{hbottommargini}....
+\setmarginsrb{30mm}{20mm}{30mm}{20mm}{12pt}{11mm}{0pt}{11mm}
+
+%fancyhdr - sidehoved og sidefod
+\usepackage{fancyhdr}
+%Indholdet af sidehoved og sidefod:
+\renewcommand{\headheight}{14.5pt} %er obligatorisk v. fancyhdr
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\lhead{} \chead{Bonus exercise - Stars} \rhead{June 2022}
+%\lfoot{bla}
+\cfoot{Page \thepage~of \pageref{lastpage}}
+%\rfoot{bla}
+
+%En række ams-pakker til matematik:
+\usepackage{amsfonts,amsmath,amssymb}
+
+%ntheorem
+%\usepackage{amsthm}
+\usepackage[amsmath,thmmarks,framed]{ntheorem}
+%\theoremsymbol{$\vartriangleleft$}
+%\theoremheaderfont{\bfseries\sffamily}
+\theorembodyfont{\normalfont}
+\newtheorem{Exercise}{Task}
+%\newtheorem{definition}{Definition}
+%\newtheorem{eksempel}{Eksempel}
+%\newtheorem{Metode}{Metode}
+
+%inkludering af kildekode:
+%\usepackage{verbatim}
+
+%overfull hbox under 3pt ignoreres:
+\hfuzz=4pt
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% Pakker til inkludering af grafik: %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\msun}{~\mathrm{M}_{\odot}}
+
+
+%Denne pakke srger for at floats ikke flyder ind i andre afsnit ved kommandoen \FloatBarrier (dette medfrer ikke ny side i modsætning til \clearpage)
+\usepackage{placeins}
+
+%labelfonts i captions bliver fede og captionmargin forstrres:
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+\setlength{\captionmargin}{20pt}
+
+\pagestyle{fancy}
+
+%%%%%%%%%%%%%%%%%%%%% NYE KOMMANDOER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\newcommand{\mc}[1]{\mathcal{#1}}
+%\newcommand{\mb}[1]{\mathbf{#1}}
+\newcommand\ion[2]{\text{#1\,\textsc{\lowercase{#2}}}}	% ionization states
+%Horizontale tykke streger via \HRule :
+%\newcommand{\HRule}{\rule{\textwidth}{1mm}}
+
+%d'er som bruges ved infinitesimaler:
+\DeclareMathOperator{\di}{d\!}
+
+%orddeling
+%\hyphenation{Mar-tin}
+
+\definecolor{ForestGreen}{RGB}{34,139,34}
+
+
+%Python code...
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
+
+% Custom colors
+\usepackage{color}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+
+\usepackage{listings}
+
+% Python style for highlighting
+\newcommand\pythonstyle{\lstset{
+language=Python,
+basicstyle=\ttm,
+morekeywords={self},              % Add keywords here
+keywordstyle=\ttb,
+emph={MyClass,__init__},          % Custom highlighting
+emphstyle=\ttb,    % Custom highlighting style
+%stringstyle=\color{deepgreen},                         % Any extra options here
+showstringspaces=false
+}}
+
+
+% Python environment
+\lstnewenvironment{python}[1][]
+{
+\pythonstyle
+\lstset{#1}
+}
+{}
+
+
+
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% DOKUMENT START %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\typeout{---------- Dokument start -------------} % vises i log
+\begin{document}
+
+
+\section*{The stellar disc of a galaxy from a galaxy formation simulation}
+
+When running a cosmological simulation, the output consists of coordinates and properties of \emph{dark matter particles}, \emph{gas cells} and \emph{star particles}. Your are already familiar with analysing dark matter particles from a galaxy (this was done in exercise A).
+
+In this exercise, you will analyse the distribution of stars in a galaxy from Illustris TNG-50, which is a large-scale galaxy formation simulation (\url{https://www.tng-project.org/}). Each \emph{star particle} represents a stellar population with the same age and metallicity. Such star particles are spawned out of star-forming gas cells in the simulation.
+
+The target of the analysis is a disc galaxy at redshift 0 with a total mass (stars, gas, dark matter) of around $10^{12}$ M$_\odot$. This is comparable to the mass of the Milky Way.
+
+\subsection*{Reading and plotting the data}
+
+The stars in the disc region (we define the disc region to be withn $0.1 R_{200}$ of the galaxy centre) from the simulation are included in the file,\\
+{\ttm  GalaxyFromIllustrisTNG50\_Stars\_Subhalo521803.txt}.\\
+
+\noindent{}The columns are:
+\begin{verbatim}
+  x coordinate of star particle: in units of kpc
+  y coordinate of star particle: in units of kpc
+  z coordinate of star particle: in units of kpc
+  M: mass in units of Msun
+  Minit: mass, when the star particle was formed in units of Msun
+  zinit: the redshift where the star was formed
+\end{verbatim}
+$M$ is always smaller than $M_\text{init}$, because a star particle looses mass (e.g. by supernova winds) as it evolves. The coordinates are centred such that the galaxy centre is in (0,0,0). The data can be read in python using the {\ttm numpy.loadtxt} function:
+
+\begin{python}
+import numpy
+Array = numpy.loadtxt(
+"GalaxyFromIllustrisTNG50_Stars_Subhalo521803.txt"
+)
+Pos = Array[:,0:3]
+Mass = Array[:,3]
+InitialMass = Array[:,4]
+RedshiftFormed = Array[:,5]
+\end{python}
+
+
+
+{\color{ForestGreen}
+\begin{Exercise}Plot a projection showing the surface stellar density (in units of M$_{\odot}$ kpc$^{-2}$) of the galaxy. Do $(x,y)$, $(x,z)$ and $(y,z)$ projections. Does it look like a disc galaxy? Hint: Use plt.hist2d to create the projections.
+\end{Exercise}
+}
+
+\subsection*{The orientation of the disc}
+
+In the next step, we will perform a rotation of the coordinates, such that the axes are aligned with the minor axis and major axis of the disc. We will let $x,y,z$ denote the original coordinates (as given in the above file), and let $x',y',z'$ denote the rotated coordinate system, which is aligned with the galaxy.
+
+To calculate the disc orientation, we define the moment of inertia tensor:
+\begin{align}
+\bs{I} \equiv \sum_i m_i \begin{bmatrix}
+y_i^2+z_i^2 & -x_iy_i & -x_iz_i\\
+-x_iy_i & x_i^2+z_i^2 & -y_iz_i\\
+-x_iz_i & -y_iz_i & x_i^2+y_i^2\\
+\end{bmatrix},
+\end{align}
+where $i$ is an index of a star particle, and the sum is over all star particles.
+
+With Python and Numpy, the inertia tensor can be constructed as follows:
+\begin{python}
+tensor = numpy.zeros( (3,3) )
+tensor[0,0] = numpy.sum(Mass * ( y*y + z*z ))
+tensor[1,1] = numpy.sum(Mass * ( x*x + z*z ))
+tensor[2,2] = numpy.sum(Mass * ( x*x + y*y ))
+
+tensor[0,1] = - numpy.sum(Mass * x*y )
+tensor[1,0] = tensor[0,1]
+tensor[0,2] = - numpy.sum(Mass * x*z )
+tensor[2,0] = tensor[0,2]
+tensor[1,2] = - numpy.sum(Mass * y*z )
+tensor[2,1] = tensor[1,2]
+\end{python}
+The eigenvalues and eigenvectors can be found using the {\ttm numpy.linalg.eig} function
+\begin{python}
+eigval, eigvec = numpy.linalg.eig( tensor )
+\end{python}
+The eigenvectors are the symmetry axes of the galaxy. We would like to rotate to a new coordinate system, with unit vector {\ttm xdir}, {\ttm ydir} and {\ttm zdir}:
+\begin{python}
+xdir = eigvec[:,0]
+ydir = eigvec[:,1]
+zdir = numpy.cross( xdir, ydir )
+\end{python}
+Above, we define {\ttm zdir} using a cross product (instead of e.g. using {\ttm eigvec[:,2]}), to make sure that we obtain a right-handed coordinate system.
+
+We denote the coordinates in the rotated frame as $x',y',z'$ (and {\ttm Xprime}, {\ttm Yprime}, {\ttm Zprime} in our python code). These coordinates can be calculated by projecting the vectors onto the new unit vectors. We obtain the $x'$-values with
+\begin{python}
+Xprime = xdir[0]*x+xdir[1]*y+xdir[2]*z
+\end{python}
+And similarly for $y'$ ({\ttm Yprime}) by replacing xdir with ydir.
+
+{\color{ForestGreen}
+\begin{Exercise}
+Calculate the rotated coordinates $x',y',z'$ of the star particles, and plot surface density projections in the $(x',y')$, $(x',z')$, and $(y',z')$ planes.
+\end{Exercise}
+\begin{Exercise}
+Determine the rotation axis for this galaxy. It is either $x'$, $y'$ or $z'$. Hint: the rotation axis can be visually identified, since the galaxy is flattened along this axis. Quantitatively, it is the eigenvector of the inertia tensor with the largest eigenvalue.
+\end{Exercise}
+}
+
+ 
+\subsection*{Surface density profile}
+
+
+We will now go ahead and plot the 1D surface density profile seen in an face-on projection. You will need to calculate the \emph{radial distance}, $R$, to the rotation axis. It is called the radial distance, because it corresponds to the radial coordinate in polar or cylindrical coordinates.
+
+The radial distance equals one of the following expressions 
+\begin{align}
+R=\sqrt{ y'^2 + z'^2}, \text{  if the rotation axis is } x'.\\
+R=\sqrt{ x'^2 + z'^2}, \text{  if the rotation axis is } y'.\\
+R=\sqrt{ x'^2 + y'^2}, \text{  if the rotation axis is } z'.
+\end{align}
+
+{\color{ForestGreen}
+\begin{Exercise}
+Calculate the radial distance for each star particle.
+\end{Exercise}}
+In the following exercise, you should calculate the projected 1D surface density profile of the disc. Basically, a plot complementary to fig. 9 from here: \url{https://ui.adsabs.harvard.edu/abs/2020MNRAS.498.2968L/abstract}.
+{\color{ForestGreen}
+\begin{Exercise}
+Create "polar/cylindrical" shells bounded by different $R$-values, and calculate / plot the 1D surface density in units of M$_\odot$kpc$^{-2}$ (as a function of $R$). \\Hint: Create a histogram with 20 equally sized bins for the radial distance. The histogram should be weighted by the mass, so you obtain the total mass in each bin. Divide each histogram bin value with the area covered by each bin ($2\pi R \Delta R$, where $\Delta R$ is the histogram's bin width). Use a logscale on the $y$-axis using {\ttm plt.semilogy()}. 
+\end{Exercise}
+}
+
+\subsection*{Star formation history of the galaxy}
+
+For each star particle in the galaxy, we have a formation redshift and an initial mass. Based on this we can calculate the galaxy's \emph{star formation history}, which is the mass of stars formed per year (in units of M$_\odot$yr$^{-1}$) as a function of time. -- it is simply an exercise of making a mass-weighed histogram of the formation times.
+
+{\color{ForestGreen}
+\begin{Exercise}
+Use the {\ttm lookback\_time} function in {\ttm astropy} to calculate the lookback time (in Gyr), where each star particle was formed. Use the {\ttm Planck15} cosmology in your calculation.
+\end{Exercise}
+\begin{Exercise}
+Based on the lookback time and the initial stellar mass, make a plot of the star formation rate (in units of M$_\odot$yr$^{-1}$) as a function of time (in Gyr) of the galaxy. \\\noindent{}Hint: make a histogram showing the mass formed as a function of lookback time.... in fig. 15 (black lines) in \url{https://ui.adsabs.harvard.edu/abs/2014MNRAS.437.1750M/abstract} you can see such a plot.
+\end{Exercise}
+}
+
+
+
+\newpage
+\subsection*{More exercises}
+
+
+{\color{ForestGreen}
+\begin{Exercise}
+Do surface density projections of the young stars with a formation lookback time between 0 and 2 Gyr. Do the projection in the $(x',y')$, $(x',z')$, and $(y',z')$ planes.
+\end{Exercise}
+}
+
+
+{\color{ForestGreen}
+\begin{Exercise}
+Do surface density projections for stars in each of the following lookback time intervals: (0--2 Gyr), (2--4 Gyr), (4--6 Gyr), (6--10 Gyr), (all stars). Is the galaxy disc most easily visible for the young or old stars?
+\end{Exercise}
+}
+
+{\color{ForestGreen}
+\begin{Exercise}
+Repeat task 5, where you create a curve for the stars in each of the following lookback time intervals: (0--2 Gyr), (2--4 Gyr), (4--6 Gyr), (6--10 Gyr), (all stars).
+\end{Exercise}
+}
+
+
+
+\begin{flushright}
+\includegraphics[width=2cm]{logo1.pdf}
+\end{flushright}
+
+
+\def\aj{AJ}
+\def\araa{ARA\&A}
+\def\apj{ApJ}
+\def\apjl{ApJ}
+\def\apjs{ApJS}
+\def\apss{Ap\&SS}
+\def\aap{A\&A}
+\def\aapr{A\&A~Rev.}
+\def\aaps{A\&AS}
+\def\mnras{MNRAS}
+\def\nat{Nature}
+\def\pasp{PASP}
+\def\aplett{Astrophys.~Lett.}
+\def\physrep{Physical Reviews}
+\def\nar{New A Rev.}
+
+%\footnotesize{
+%\bibliographystyle{mnras}
+%\bibliography{ref}
+%}
+
+
+
+
+
+\label{lastpage}
+\end{document}
